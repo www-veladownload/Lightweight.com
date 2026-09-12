@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: lightwatch-ng
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lightwatch-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: SCAN_SECRET
+        sync: false
+
+  # No Render Cron Job here on purpose: Render Cron Jobs cannot use the free
+  # compute plan (free only applies to web services, Key Value, and
+  # Postgres), so a cron service here would always require payment.
+  # Instead, the web service itself runs the news scan on an internal
+  # timer (see server.js), and /api/intel/scan can also be triggered by a
+  # free external scheduler such as cron-job.org — see DEPLOY.md.
+
+  # Render Postgres is declared below.
+databases:
+  - name: lightwatch-db
+    plan: free
