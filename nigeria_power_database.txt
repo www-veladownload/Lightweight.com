@@ -1,0 +1,172 @@
+================================================================================
+NIGERIA POWER SUPPLY DATABASE — reference dataset for LightWatch NG
+Compiled September 2026. Pairs with index.html (a copy of the state/DisCo/band
+data below is embedded directly in the app's JS so it works offline; this file
+is the readable, portable, editable source of truth — edit here, then copy
+matching values into the STATES/INTEL arrays near the top of index.html's
+<script> block).
+================================================================================
+
+--------------------------------------------------------------------------------
+SECTION 1 — WHAT THIS DATABASE IS AND ISN'T
+--------------------------------------------------------------------------------
+- This is NOT a live outage log. No public source publishes per-city or
+  per-street real-time outage data for Nigeria — not PHCN/DisCos, not social
+  media aggregators. That dataset doesn't exist yet; the app itself is meant
+  to start building it from user reports.
+- What IS real and verified (as of Sept 2026): DisCo/state coverage, the NERC
+  Band system, national generation figures, grid collapse frequency, and
+  known vandalism/infrastructure trouble spots. Sources listed in Section 6.
+
+--------------------------------------------------------------------------------
+SECTION 2 — NERC BAND SYSTEM (Service-Based Tariff, since April 2024)
+--------------------------------------------------------------------------------
+Band A : 20-24 hours/day guaranteed supply — highest tariff (~N209-225+/kWh)
+Band B : 16-19 hours/day
+Band C : 12-15 hours/day
+Band D : 8-11 hours/day
+Band E : 4-7 hours/day — lowest tariff
+
+Notes:
+- Bands are assigned per FEEDER (a transformer's service line), not per city
+  or state. Two streets in the same neighborhood can be on different bands.
+- Only ~15% of Nigeria's ~12 million registered electricity customers are on
+  Band A.
+- Compliance is inconsistent: NERC has repeatedly downgraded/upgraded feeders
+  month to month (see IBEDC example below) after DisCos failed to sustain
+  promised hours. Multiple 2025-2026 investigative reports found "Band A"
+  feeders in Lagos, Abuja, Port Harcourt and Calabar delivering below the
+  promised 20 hours.
+- DisCos are technically required to publish a rolling 7-day average supply
+  figure for Band A feeders on their own websites by 9:00am daily — this is
+  a real, scrapeable data source for a future live version of this app.
+
+--------------------------------------------------------------------------------
+SECTION 3 — DISTRIBUTION COMPANIES (DISCOS) AND STATE COVERAGE
+--------------------------------------------------------------------------------
+DisCo Name (short)      | Full name                              | States / Areas Covered
+------------------------|-----------------------------------------|----------------------------------
+AEDC                    | Abuja Electricity Distribution Co.       | FCT, Niger, Kogi, Nasarawa
+IKEDC                   | Ikeja Electric                            | Lagos (mainland/north): Ikeja, Ikorodu, Shomolu, Akowonjo, Oshodi, Abule Egba
+EKEDC                   | Eko Electricity Distribution Co.          | Lagos (island/south): Victoria Island, Lekki, Apapa, Festac, Ojo
+IBEDC                   | Ibadan Electricity Distribution Co.       | Oyo, Ogun, Osun, Kwara (+ parts of Niger)
+BEDC                    | Benin Electricity Distribution Co.        | Edo, Delta, Ondo, Ekiti
+EEDC                    | Enugu Electricity Distribution Co.        | Enugu, Anambra, Imo, Abia (excl. Aba), Ebonyi
+PHED                    | Port Harcourt Electricity Distribution Co.| Rivers, Bayelsa, Cross River, Akwa Ibom
+KEDCO                   | Kano Electricity Distribution Co.         | Kano, Katsina, Jigawa
+KAEDCO                  | Kaduna Electric                           | Kaduna, Kebbi, Sokoto, Zamfara
+JED                     | Jos Electricity Distribution Co.          | Plateau, Bauchi, Benue, Gombe (transitioning to state regulator GOSERC, Jan 2026)
+YEDC                    | Yola Electricity Distribution Co.         | Adamawa, Borno, Taraba, Yobe
+Aba Power (APL)         | APL Electric Company Limited              | City of Aba + 9 LGAs in Abia State only (added 2024, post Geometric Power integration)
+
+Structural note: The Electricity Act 2023 decentralized regulation — as of
+2026, roughly 15 states run their own electricity regulator (e.g. Oyo,
+Ekiti), meaning tariffs/bands can differ even within one DisCo's footprint
+depending on which state a feeder sits in.
+
+--------------------------------------------------------------------------------
+SECTION 4 — STATE-BY-STATE SNAPSHOT (37 entries: 36 states + FCT)
+Format: State | DisCo | Typical Band tendency | Known risk factors
+--------------------------------------------------------------------------------
+Abia          | EEDC / Aba Power (Aba city) | C     | High vandalism/cable-theft reports
+Adamawa       | YEDC                        | D     | Feeder distance from grid hubs
+Akwa Ibom     | PHED                        | B     | High vandalism reports; Ibom Power Plant helps supply
+Anambra       | EEDC                        | C     | Standard southeast feeder constraints
+Bauchi        | JED                         | D     | Rural feeder coverage gaps
+Bayelsa       | PHED                        | D     | History of multi-month outages after transmission vandalism (Ahoada-Yenagoa corridor, 2024, ~4 months)
+Benue         | JED                         | D     | Rural access gap
+Borno         | YEDC                        | E     | Security situation affects infrastructure repair
+Cross River   | PHED                        | C     | Standard south-south constraints
+Delta         | BEDC                        | C     | Oil-region infrastructure, mixed reliability
+Ebonyi        | EEDC                        | D     | Transmission tower vandalism reported (Nkalagu-Abakaliki line)
+Edo           | BEDC                        | C     | Standard south-south constraints
+Ekiti         | BEDC / IBEDC (overlap)      | C     | High vandalism reports
+Enugu         | EEDC                        | C     | Regional hub, mixed feeder quality
+FCT (Abuja)   | AEDC                        | A     | Priority feeders, but underground cable theft reported near Millennium Park
+Gombe         | JED (-> GOSERC transition)  | D     | Regulatory transition in progress (2026)
+Imo           | EEDC                        | C     | Standard southeast constraints
+Jigawa        | KEDCO                       | D     | Rural access gap
+Kaduna        | KAEDCO                      | C     | Mixed urban/rural feeder quality
+Kano          | KEDCO                       | C     | Dense population strains feeders
+Katsina       | KEDCO                       | D     | Transmission tower vandalism reported (Katsina-Gazoua line, Jan 2025)
+Kebbi         | KAEDCO                      | E     | Rural access gap
+Kogi          | AEDC                        | C     | Transit corridor infrastructure
+Kwara         | IBEDC                       | C     | Frequent NERC band downgrades reported
+Lagos         | Ikeja Electric / EKEDC      | A/B mix | Best-served state overall, but many Band C/D feeders remain
+Nasarawa      | AEDC                        | C     | Standard north-central constraints
+Niger         | AEDC                        | C     | Hosts Kainji/Jebba hydro plants but local supply still inconsistent
+Ogun          | IBEDC                       | B     | Industrial corridor benefits from proximity to Lagos investment
+Ondo          | BEDC                        | C     | Standard southwest constraints
+Osun          | IBEDC                       | C     | Frequent NERC band downgrades reported
+Oyo           | IBEDC                       | C     | Frequent NERC band downgrades reported
+Plateau       | JED                         | C     | Standard north-central constraints
+Rivers        | PHED                        | B     | Oil-hub investment helps Port Harcourt city; rural LGAs lag
+Sokoto        | KAEDCO                      | D     | Rural access gap
+Taraba        | YEDC                        | E     | Rural access gap
+Yobe          | YEDC                        | E     | Security situation affects infrastructure repair
+Zamfara       | KAEDCO                      | E     | Security situation affects infrastructure repair
+
+--------------------------------------------------------------------------------
+SECTION 5 — NATIONAL GENERATION & GRID FACTS
+--------------------------------------------------------------------------------
+- Installed generation capacity: ~13,600 MW across 28 grid-connected plants (2025)
+- Actual AVAILABLE generation: typically ~5,000-5,400 MW (far below installed
+  capacity); can crash to a few hundred MW during a collapse
+- Generation mix: ~80% gas-fired thermal, ~20% hydropower (Kainji, Jebba, Shiroro)
+- National grid collapses: 220+ recorded partial/total collapses since 2010;
+  roughly one per month in recent years (12 in 2024; several more through
+  2025-2026)
+- A single grid collapse can black out multiple states simultaneously
+  (documented joint outages across Lagos, Abuja, Port Harcourt, Kano, Enugu,
+  Kaduna)
+- GenCo debt: grew to an estimated N6.6 trillion (Jan 2026), N6.8 trillion
+  (Feb 2026), projected N8.8 trillion by Dec 2026 if unresolved. Of every
+  N280bn in monthly GenCo invoices, only ~35% is typically paid.
+
+--------------------------------------------------------------------------------
+SECTION 6 — VANDALISM / INFRASTRUCTURE INCIDENT LOG (illustrative, not exhaustive)
+--------------------------------------------------------------------------------
+- TCN logged 131 transmission-infrastructure vandalism cases Jan-Nov 2025
+- 178 transmission towers affected in H1 2025 alone (42 separate incidents)
+- 2024: 86 towers vandalized nationwide, 26 completely destroyed
+- Jan 2025: vandals damaged towers 105-107 on the Katsina-Gazoua 132/33kV line
+- 2024: Ahoada-Yenagoa transmission corridor destroyed -> ~4-month blackout
+  across Bayelsa State
+- Highest-reported vandalism/cable-theft states: Abia, Akwa Ibom, Ekiti, Rivers
+- Copper cable and transformer-part theft is often linked to resale as scrap
+  or repurposing for informal solar setups
+
+--------------------------------------------------------------------------------
+SECTION 7 — SUGGESTED LIVE-DATA ROADMAP (for turning this into a real product)
+--------------------------------------------------------------------------------
+1. Backend + real database (Postgres/Mongo) to persist signups, survey
+   answers, and outage reports permanently (the current index.html keeps
+   everything in browser memory only — it resets on refresh).
+2. Real authentication (hashed passwords, sessions/JWT) — the current
+   prototype does NOT securely store passwords; do not reuse real passwords
+   with it.
+3. Geolocation + clustering logic: group reports within a radius/time window
+   into a single "confirmed cluster" event (this is mocked with random
+   numbers in the current build).
+4. A scheduled job (e.g. hourly cron) that:
+     - polls DisCo websites for their published Band A 7-day rolling average
+     - runs a news-API or RSS search for terms like "transformer", "NEPA",
+       "PHCN", "gas crisis", "TCN vandalism", per state
+     - posts matching items into the Infrastructure Intel feed, tagged by
+       state/LGA
+   This is the only realistic way to do the "scan the internet automatically"
+   feature — a static HTML file cannot do this on its own; it needs a server
+   that runs continuously.
+5. Push/SMS/WhatsApp alerts to users in an affected area when a new cluster
+   or news item is posted for their state/city.
+6. A real map (e.g. Leaflet/Mapbox with Nigeria GeoJSON boundaries) in place
+   of the current state-tile grid, once you have real lat/lon-tagged reports.
+
+--------------------------------------------------------------------------------
+SECTION 8 — SOURCES (accessed September 2026)
+--------------------------------------------------------------------------------
+Nairametrics, BusinessDay NG, Vanguard, Daily Trust, The Guardian (Nigeria),
+NERC official orders (nerc.gov.ng), TechCabal, ESI-Africa, Bulwark
+Intelligence, Tribune Online, The Conversation, Grokipedia (Electricity
+sector in Nigeria), AllAfrica, Elsan Transformers, Climate Scorecard.
+================================================================================

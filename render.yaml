@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: lightwatch-ng
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lightwatch-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: SCAN_SECRET
+        sync: false
+
+  - type: cron
+    name: lightwatch-news-scanner
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm run scan
+    schedule: "*/30 * * * *"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lightwatch-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: SCAN_ONLY
+        value: "true"
+
+  # Render Postgres is declared below. Keep the database name stable so both services can reference it.
+databases:
+  - name: lightwatch-db
+    plan: free
